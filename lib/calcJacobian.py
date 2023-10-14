@@ -13,6 +13,17 @@ def calcJacobian(q_in):
     J = np.zeros((6, 7))
 
     ## STUDENT CODE GOES HERE
+    fk = FK()
+    axis_of_rotation = fk.get_axis_of_rotation(q_in)
+    joint_position,_ = fk.forward(q_in)
+
+    # Calculate the Jacobian matrix
+    for i in range(7):
+        # Linear velocity component: cross product of joint axis and position vector
+        J[:3, i] = np.cross(axis_of_rotation[:, i], np.array(joint_position[-1, :] - joint_position[i, :]))
+
+        # Angular velocity component: joint axis
+        J[3:, i] = axis_of_rotation[:, i]
 
     return J
 

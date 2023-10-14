@@ -95,8 +95,16 @@ class FK():
 
         """
         # STUDENT CODE HERE: This is a function needed by lab 2
+        axisList = []
+        for i in range(1, 8):
+            T = self.calculateDH(i, q)
+            R = T[:3, :3]
+            axis = R[:, 2]
+            axis = axis / np.linalg.norm(axis)
+            axisList.append(axis)
+        axisarray = np.array(axisList).T
 
-        return ()
+        return axisarray
 
     def compute_Ai(self, q):
         """
@@ -122,4 +130,4 @@ if __name__ == "__main__":
 
     print("Joint Positions:\n", joint_positions)
     print("End Effector Pose:\n", T0e)
-
+    print("rotation", fk.get_axis_of_rotation(q))

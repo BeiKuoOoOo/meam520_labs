@@ -11,7 +11,13 @@ def FK_velocity(q_in, dq):
 
     ## STUDENT CODE GOES HERE
 
-    velocity = np.zeros((6, 1))
+    J = calcJacobian(q_in)
 
+    # Compute the end effector velocities using the Jacobian
+    dp = dq.reshape((7, 1))
+    velocity = J @ dq
+    velocity = velocity.reshape((6, 1))
+
+    assert velocity.shape == (6, 1)
 
     return velocity
