@@ -21,5 +21,20 @@ def calcAngDiff(R_des, R_curr):
     """
     omega = np.zeros(3)
     ## STUDENT CODE STARTS HERE
+    # Calculate the skew symmetric matrix of the rotation matrix difference
+    S = 0.5 * (R_curr.T @ R_des - R_des.T @ R_curr)
+
+    # Extract the coefficients of the skew symmetric matrix to form the rotation axis vector
+    omega = np.array([S[2, 1], S[0, 2], S[1, 0]])
+
+    # Calculate the rotation angle theta ensuring that the trace is within the valid range
+    trace = np.trace(R_curr.T @ R_des)
+    theta = np.arccos((trace - 1) / 2)
+
+    # Normalize the rotation axis vector and scale by the sine of the rotation angle
+    if not np.isclose(theta, 0):
+        omega = omega / np.linalg.norm(omega) * np.sin(theta)
+    else:
+        omega = np.zeros(3)  # If theta is zero, then there is no rotation and omega is a zero vector.
 
     return omega
